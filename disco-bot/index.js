@@ -11,7 +11,7 @@ client.login(process.env.CLIENT_TOKEN); //login bot using token
 client.on('message', msg => {
   if (msg.content === '!date') {
 	
-  axios.get("https://z-api.sargassosailor.com:3001/getserver")
+  axios.get(process.env.API_SITE)
   .then((response) => { msg.reply("Game Date is: "+(response.data[0].month)+"/"+(response.data[0].dayofmonth)+". The Apocalypse began "+response.data[0].daysSinceStart+" days ago.");})
 
   }
