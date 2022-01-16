@@ -1,0 +1,43 @@
+version: "3.7"
+
+services:
+  sql:
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "SQL_ROOT_PW"
+      MYSQL_DATABASE: "Zombo"
+      MYSQL_USER: "SQL_USER"
+      MYSQL_PASSWORD: "SQL_PASS"
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 899:8080
+  phpreader:
+    image: chrisashtear/php-mysqli:latest
+    ports:
+      - 898:80
+    volumes:
+      - '/data/compose/zomboid/server-data:/server-data'
+      - '/data/compose/zomboid/server-data:/var/www/html'
+  project-zomboid:
+    image: afey/zomboid
+    restart: unless-stopped
+    environment:
+      SERVER_NAME: "PZ"
+      ADMIN_PASSWORD: "ADMIN_PASSWORD"
+      SERVER_BRANCH: ""
+      RCON_PASSWORD: "RCON_PASSWORD"
+      SERVER_PUBLIC_NAME: "Zomboid Server"
+      SERVER_PUBLIC_DESC: "Description"
+    ports:
+      - "8766:8766/udp"
+      - "8767:8767/udp"
+      - "16261:16261/udp"
+      - "16262-16302:16262-16302"
+      - "27015:27015"
+    volumes:
+      - '/data/compose/zomboid/server-data:/server-data'
+      - '/data/compose/zomboid/server-files:/server-files'

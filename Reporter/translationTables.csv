@@ -1,0 +1,13 @@
+WMI_Name,SQL_FieldName,Database
+id,id,Players
+username,username,Players
+name,charname,Players
+x,x,Players
+y,y,Players
+data,data,Players
+lastOnline,lastOnline,Players
+sid,id,Game
+dayofmonth,dayofmonth,Game
+month,month,Game
+daysSinceStart,daysSinceStart,Game
+sname,name,Game
