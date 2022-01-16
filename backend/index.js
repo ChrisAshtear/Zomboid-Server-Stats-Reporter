@@ -8,10 +8,10 @@ const http = require('http');
 const fs = require('fs');
 
 const db = mysql.createPool({
-  host: 'hostname', // the host name MYSQL_DATABASE: node_mysql
-  user: 'username', // database user MYSQL_USER: MYSQL_USER
-  password: 'password', // database user password MYSQL_PASSWORD: MYSQL_PASSWORD
-  database: 'Zombo' // database name MYSQL_HOST_IP: mysql_db
+  host: process.env.SQL_HOST, 
+  user: process.env.SQL_USER, 
+  password: process.env.SQL_PASS,
+  database: 'Zombo' 
 })
 
 const app = express();
@@ -37,12 +37,13 @@ app.get('/getserver', (req, res) => {
     res.send(result)
   })
 })
-
+/*
 const httpsServer = https.createServer({
   key: fs.readFileSync('privkey1.pem'),
   cert: fs.readFileSync('fullchain1.pem'),
 }, app);
-
-httpsServer.listen(3001, () => {
-    console.log('HTTPS Server running on port 3001');
+*/
+const httpServer = http.createServer(app);
+httpServer.listen(80, () => {
+    console.log('HTTP Server running on port 80');
 });
