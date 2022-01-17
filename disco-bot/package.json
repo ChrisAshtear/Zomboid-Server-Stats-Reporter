@@ -1,7 +1,7 @@
 {
   "name": "zombot-discord",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.1.0",
+  "description": "Discord bot that connects to a zomboid reporter server and reports current date in-game",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -12,7 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.24.0",
-    "discord.js": "^13.6.0",
-    "dotenv": "^12.0.4"
+    "discord.js": "^13.6.0"
   }
 }
