@@ -1,8 +1,5 @@
 <?php
-$SQLSERVER = "sql";
-$SQLUSER = "username";
-$SQLPASS = "pass";
-$SQLTABLE = "Zombo";
+
 
 class parseData
 {
@@ -30,6 +27,10 @@ class parseData
 	
 	public function initConnection()
 	{
+		$SQLSERVER = $_ENV['SQL_HOST'];
+		$SQLUSER = $_ENV['SQL_USER'];
+		$SQLPASS = $_ENV['SQL_PASS'];
+		$SQLTABLE = $_ENV['SQL_TABLE'];
 		$this->conn = new mysqli($SQLSERVER, $SQLUSER, $SQLPASS, $SQLTABLE);
 	}
 	
@@ -58,9 +59,9 @@ class parseData
           continue;
         }
 
-		$updQuery .= $fieldName ."='".$data[$key]."',";
+		$updQuery .= $fieldName ."='".mysqli_real_escape_string($this->conn,$data[$key])."',";
 		$k = mysqli_real_escape_string($this->conn,$fieldName);
-      	        $val = mysqli_real_escape_string($this->conn,$data[$key]);
+      	$val = mysqli_real_escape_string($this->conn,$data[$key]);
 		$insQueryFields .= $k . ",";
 		$insQueryVals .= "'".$val."',";
 		//$this->addAutofill($data[$key],$key);
@@ -215,7 +216,7 @@ class parseData
 		if($update)
 		{
 			$query = "UPDATE ".$tableName." SET ".$this->updQuery." WHERE id=".$id;
-			//echo($query);
+			echo($query);
 		}
 		else
 		{

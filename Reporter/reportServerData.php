@@ -2,14 +2,16 @@
 
 include "parseData.php";
 
+$env = parse_ini_file("/etc/environment",false,INI_SCANNER_RAW);
 //get name of server
-$SERVER_NAME = "pz"
+$SERVER_NAME = $env['ZOMBOID_SERVER_NAME'];
+chdir('/var/www/html');
 
 class MyDB extends SQLite3
 {
     function __construct()
     {
-        $this->open('Saves/Multiplayer/'.$SERVER_NAME.'/players.db');
+        $this->open('sv/Saves/Multiplayer/'.$GLOBALS['SERVER_NAME'].'/players.db');
     }
 }
 
@@ -17,7 +19,7 @@ class MyPZ_DB extends SQLite3
 {
     function __construct()
     {
-        $this->open('db/'.$SERVER_NAME.'.db');
+        $this->open('sv/db/'.$GLOBALS['SERVER_NAME'].'.db');
     }
 }
 
@@ -32,6 +34,7 @@ while ($row = $result->fetchArray())
     $pzLookup = $pz_db->query('SELECT username,lastConnection FROM whitelist WHERE username = "'.$row['username'].'"');
     $r = $pzLookup->fetchArray();
     $row['lastOnline'] = $r['lastConnection'];
+	if($r['lastConnection'] == ""){$row['lastOnline']= date(DATE_ATOM, mktime(0, 0, 0, 7, 1, 2000));}
     $d = new parseData($row);
     $d->parse($row);
     $d->runQuery("Players",$d->sqlGetID("id","Players","id",$row['id'])); 
@@ -39,13 +42,12 @@ while ($row = $result->fetchArray())
 $d->closeSQL();
 echo("trying file read");
 //read time file
-$filename = "Saves/Multiplayer/".$SERVER_NAME."/map_t.bin";
+$filename = "sv/Saves/Multiplayer/".$GLOBALS['SERVER_NAME']."/map_t.bin";
 $handle = fopen($filename,"rb");
 $contents = fread($handle, filesize($filename));
 fclose($handle);
-//var_dump($contents);
+
 $unpacked = unpack("C40", $contents);
-//var_dump($unpacked);
 // reset array keys
 $unpacked = array_values($unpacked);
 // this variable holds the size of *one* structure in the file
@@ -59,9 +61,8 @@ echo("DayOfMonth:".$day);
 echo("Month:".$month);
 echo("DaysSurvived:".$unpacked[15]);
 
-$server = parse_ini_file("Server/".$SERVER_NAME.".ini",false,INI_SCANNER_RAW);
+$server = parse_ini_file("sv/Server/".$GLOBALS['SERVER_NAME'].".ini",false,INI_SCANNER_RAW);
 echo($server["PublicName"]);
-echo($server["PublicDescription"]);
 
     $sfield['sid'] = 1;
     $sfield['dayofmonth'] = $day;
