@@ -1,12 +1,38 @@
 version: "3.7"
 
 services:
+  reporter:
+    image: chrisashtear/zomboid-reporter:latest
+    restart: always
+    environment:
+      SQL_HOST: "sql"
+      SQL_USER: "SQL_USER"
+      SQL_PASS: "SQL_PASS"
+      ZOMBOID_SERVER_NAME: "PZ"
+    volumes:
+      - '/data/zomboid/server-data:/var/www/html/sv'
+  reporter-api:
+    image: chrisashtear/zomboid-reporter-backend:latest
+    restart: always
+    #ports:
+    #  - 3001:80
+    environment:
+      SQL_HOST: "sql"
+      SQL_USER: "SQL_USER"
+      SQL_PASS: "SQL_PASS"
+  discord:
+    image: chrisashtear/zomboid-discobot:latest
+    restart: always
+    environment:
+      CLIENT_TOKEN: "TOKEN"
+      API_HOST: "reporter-backend"
+      API_PORT: 80
   sql:
     image: mysql:latest
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: "SQL_ROOT_PW"
+      MYSQL_ROOT_PASSWORD: "SQL_ROOT_PASS"
       MYSQL_DATABASE: "Zombo"
       MYSQL_USER: "SQL_USER"
       MYSQL_PASSWORD: "SQL_PASS"
@@ -15,23 +41,16 @@ services:
     restart: always
     ports:
       - 899:8080
-  phpreader:
-    image: chrisashtear/php-mysqli:latest
-    ports:
-      - 898:80
-    volumes:
-      - '/data/compose/zomboid/server-data:/server-data'
-      - '/data/compose/zomboid/server-data:/var/www/html'
   project-zomboid:
     image: afey/zomboid
     restart: unless-stopped
     environment:
       SERVER_NAME: "PZ"
-      ADMIN_PASSWORD: "ADMIN_PASSWORD"
+      ADMIN_PASSWORD: "ADMIN_PASS"
       SERVER_BRANCH: ""
-      RCON_PASSWORD: "RCON_PASSWORD"
-      SERVER_PUBLIC_NAME: "Zomboid Server"
-      SERVER_PUBLIC_DESC: "Description"
+      RCON_PASSWORD: "RCON_PASS"
+      SERVER_PUBLIC_NAME: "Server Name"
+      SERVER_PUBLIC_DESC: ""
     ports:
       - "8766:8766/udp"
       - "8767:8767/udp"
@@ -39,5 +58,5 @@ services:
       - "16262-16302:16262-16302"
       - "27015:27015"
     volumes:
-      - '/data/compose/zomboid/server-data:/server-data'
-      - '/data/compose/zomboid/server-files:/server-files'
+      - '/data/zomboid/server-data:/server-data'
+      - '/data/zomboid/server-files:/server-files'

@@ -3,16 +3,16 @@ import './App.css';
 import axios from 'axios';
 import { Button, Container, Card, Row } from 'react-bootstrap'
 
+const backendHost = process.env.BACKEND_HOST;
+const backendPort = process.env.BACKEND_PORT;
+
 class App extends Component {
   constructor(props) {
 	  super(props);
       this.state = {
-        setBookName: '',
-        setReview: '',
         fetchData: [],
 		servData: [],
 		servName: '',
-        reviewUpdate: ''
       }
 	  window.app = this;
 	}
@@ -24,41 +24,20 @@ class App extends Component {
 		[nam]: val
 	  })
 	}
-
-	handleChange2 = (event) => {
-	  this.setState({
-		reviewUpdate: event.target.value
-	  })
-	}
 	
 	componentDidMount() {
-	  axios.get("http://localhost:3001/getplayers")
+	  axios.get("http://"+backendHost+":"+backendPort+"/getplayers")
 		  .then((response) => {
 			  this.setState({
 				  fetchData: response.data
 			  })
 		  })
-	  axios.get("http://localhost:3001/getserver")
+	  axios.get("http://"+backendHost+":"+backendPort+"/getserver")
 		  .then((response) => {
 			  this.setState({
 				  servData: response.data[0]
 			  })
 		  })
-	}
-
-	submit = () => {
-	  axios.post('/api/insert', this.state)
-		  .then(() => { alert('success post') })
-	  console.log(this.state)
-	  document.location.reload();
-	}
-
-	delete = (id) => {
-	}
-
-	edit = (id) => {
-	  axios.put(`/api/update/${id}`, this.state)
-	  document.location.reload();
 	}
 	
 	render() {
