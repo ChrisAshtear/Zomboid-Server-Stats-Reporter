@@ -37,13 +37,8 @@ app.get('/getserver', (req, res) => {
     res.send(result)
   })
 })
-/*
-const httpsServer = https.createServer({
-  key: fs.readFileSync('privkey1.pem'),
-  cert: fs.readFileSync('fullchain1.pem'),
-}, app);
-*/
+
 const httpServer = http.createServer(app);
-httpServer.listen(80, () => {
-    console.log('HTTP Server running on port 80');
+httpServer.listen(process.env.API_PORT, () => {
+    console.log('HTTP Server running on port '+process.env.API_PORT);
 });

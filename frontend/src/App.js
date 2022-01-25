@@ -3,9 +3,6 @@ import './App.css';
 import axios from 'axios';
 import { Button, Container, Card, Row } from 'react-bootstrap'
 
-const backendHost = process.env.BACKEND_HOST;
-const backendPort = process.env.BACKEND_PORT;
-
 class App extends Component {
   constructor(props) {
 	  super(props);
@@ -26,13 +23,13 @@ class App extends Component {
 	}
 	
 	componentDidMount() {
-	  axios.get("http://"+backendHost+":"+backendPort+"/getplayers")
+	  axios.get("/api/getplayers")
 		  .then((response) => {
 			  this.setState({
 				  fetchData: response.data
 			  })
 		  })
-	  axios.get("http://"+backendHost+":"+backendPort+"/getserver")
+	  axios.get("/api/getserver")
 		  .then((response) => {
 			  this.setState({
 				  servData: response.data[0]
