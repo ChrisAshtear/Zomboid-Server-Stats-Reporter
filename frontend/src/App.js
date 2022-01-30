@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import './App.css';
 import './cui.css';
 import axios from 'axios';
-import {Card,CardDeck,CardBody,CardText,CardTitle,CardHeader,Row,Col,Container} from 'reactstrap';
+import {Image,Card,CardDeck,CardBody,CardText,CardTitle,CardHeader,Row,Col,Container} from 'reactstrap';
+import  BGImage from './bg.jpg';
+import  Logo from './logo.png';
 
 class App extends Component {
   constructor(props) {
@@ -26,6 +28,7 @@ class App extends Component {
 	}
 	
 	componentDidMount() {
+	  document.body.backgroundImage = `url(${BGImage})`;
 	  axios.get("/api/getplayers")
 		  .then((response) => {
 			  this.setState({
@@ -59,8 +62,10 @@ class App extends Component {
 
 	  return (
 		  <div className='App animated-fadein'>
-			  <Card>
-			  <CardHeader ><h3>{this.state.servData.name}</h3></CardHeader>
+		  <br/>
+			  <img src={Logo}/>
+			  <Card className='m-2'>
+			  <CardHeader ><h1>{this.state.servData.name}</h1></CardHeader>
 			  <CardBody>
 			  {this.state.servData.description}
 			  </CardBody>
@@ -68,7 +73,7 @@ class App extends Component {
 			  <Container>
 			  <CardDeck>
 			  <Card className='m-2'>
-					<CardHeader >
+					<CardHeader className='h2'>
                         In-Game Date
                     </CardHeader>
 					  <CardBody className='clock-bg'>
@@ -76,7 +81,7 @@ class App extends Component {
 					  </CardBody>
 			  </Card>
 			  <Card className='m-2'>
-					<CardHeader >
+					<CardHeader className='h2'>
                         Current Players
                     </CardHeader>
 					  <CardBody>
@@ -84,7 +89,7 @@ class App extends Component {
 					  </CardBody>
 			  </Card>
 			  <Card className='m-2'>
-					<CardHeader >
+					<CardHeader className='h2'>
                         Days Since Apocalypse
                     </CardHeader>
 					  <CardBody>
@@ -94,9 +99,11 @@ class App extends Component {
 			  </CardDeck>
 			  </Container>
 			  <Container>
+				  <Card ><CardHeader className='h2'>Players</CardHeader>
 				  <Row>
 					  {card}
 				  </Row>
+				  </Card>
 			  </Container>
 		  </div>
 	  );
