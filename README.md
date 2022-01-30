@@ -8,3 +8,12 @@ Currently output are:
 - Days since the apocalypse began(Days Survived)
 - Player data-username+character name, & last online time for each player.
 
+# Frontend
+![](/assets/frontend.png)
+
+This is a simple stand-in front end to display data that was collected.
+
+# Discord
+![](/assets/discord.png)
+
+This is a small bot that will report the current date in the server. Currently, you have to create your own bot to use this code. 
