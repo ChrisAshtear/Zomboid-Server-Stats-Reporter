@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import './cui.css';
 import axios from 'axios';
-import {Image,Card,CardDeck,CardBody,CardText,CardTitle,CardHeader,Row,Col,Container} from 'reactstrap';
+import {Image,Card,CardDeck,CardColumns,CardBody,CardText,CardTitle,CardHeader,Row,Col,Container} from 'reactstrap';
 import  BGImage from './bg.jpg';
 import  Logo from './logo.png';
 
@@ -10,8 +10,8 @@ class App extends Component {
   constructor(props) {
 	  super(props);
       this.state = {
-        fetchData: [],
-		servData: {dayofmonth:29,month:12,daysSinceStart:20,name:"ServerName",description:"description"},
+        fetchData: [{username:'test1',charname:'test2',lastOnline:""},{username:'test1',charname:'test2',lastOnline:""},{username:'test1',charname:'test2',lastOnline:""},{username:'test1',charname:'test2',lastOnline:""},{username:'test1',charname:'test2',lastOnline:"11/23/81"},{username:'test1',charname:'test2',lastOnline:""}],
+		servData: {dayofmonth:29,month:12,daysSinceStart:20,name:"ServerName",description:"description",curPlayers:0,maxPlayers:0},
 		servName: '',
       }
 	  window.app = this;
@@ -28,7 +28,8 @@ class App extends Component {
 	}
 	
 	componentDidMount() {
-	  document.body.backgroundImage = `url(${BGImage})`;
+      console.log({BGImage});
+	  document.body.style.backgroundImage = `url(${BGImage})`;
 	  axios.get("/api/getplayers")
 		  .then((response) => {
 			  this.setState({
@@ -48,7 +49,7 @@ class App extends Component {
 		  var x = new Date(val.lastOnline);
 		  return (
 			  <React.Fragment>
-				  <Card style={{ width: '18rem' }} className='m-2'>
+				  <Card >
 					  <CardBody>
 						  <CardTitle>{val.username}</CardTitle>
 							  {val.charname}
@@ -61,19 +62,18 @@ class App extends Component {
 	  })
 
 	  return (
-		  <div className='App animated-fadein'>
+		  <div className='App animated fadeIn'>
 		  <br/>
 			  <img src={Logo}/>
-			  <Card className='m-2'>
-			  <CardHeader ><h1>{this.state.servData.name}</h1></CardHeader>
-			  <CardBody>
-			  {this.state.servData.description}
-			  </CardBody>
-			  </Card>
+
+			  <h1 className='serverTitle'>{this.state.servData.name}</h1>
+				
+			  <h3 className='serverTitle'>{this.state.servData.description}</h3>
+
 			  <Container>
 			  <CardDeck>
 			  <Card className='m-2'>
-					<CardHeader className='h2'>
+					<CardHeader className='h3'>
                         In-Game Date
                     </CardHeader>
 					  <CardBody className='clock-bg'>
@@ -81,15 +81,15 @@ class App extends Component {
 					  </CardBody>
 			  </Card>
 			  <Card className='m-2'>
-					<CardHeader className='h2'>
+					<CardHeader className='h3'>
                         Current Players
                     </CardHeader>
 					  <CardBody>
-						  <CardText className='h1'>15/32</CardText>
+						  <CardText className='h1'>{this.state.servData.curPlayers}/{this.state.servData.maxPlayers}</CardText>
 					  </CardBody>
 			  </Card>
 			  <Card className='m-2'>
-					<CardHeader className='h2'>
+					<CardHeader className='h3'>
                         Days Since Apocalypse
                     </CardHeader>
 					  <CardBody>
@@ -100,9 +100,11 @@ class App extends Component {
 			  </Container>
 			  <Container>
 				  <Card ><CardHeader className='h2'>Players</CardHeader>
-				  <Row>
+				  <CardBody>
+				  <CardColumns>
 					  {card}
-				  </Row>
+				  </CardColumns>
+				  </CardBody>
 				  </Card>
 			  </Container>
 		  </div>
