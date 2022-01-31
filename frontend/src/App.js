@@ -11,7 +11,7 @@ class App extends Component {
 	  super(props);
       this.state = {
         fetchData: [{username:'test1',charname:'test2',lastOnline:""},{username:'test1',charname:'test2',lastOnline:""},{username:'test1',charname:'test2',lastOnline:""},{username:'test1',charname:'test2',lastOnline:""},{username:'test1',charname:'test2',lastOnline:"11/23/81"},{username:'test1',charname:'test2',lastOnline:""}],
-		servData: {dayofmonth:29,month:12,daysSinceStart:20,name:"ServerName",description:"description",curPlayers:0,maxPlayers:0},
+		servData: {dayofmonth:2,month:3,daysSinceStart:20,year:1993,name:"ServerName",description:"description",curPlayers:"NA",maxPlayers:0},
 		servName: '',
       }
 	  window.app = this;
@@ -47,6 +47,7 @@ class App extends Component {
 	render() {
 	  let card = this.state.fetchData.map((val, key) => {
 		  var x = new Date(val.lastOnline);
+		  var lastOnlineDate = x.toLocaleDateString("default", { year: "numeric", month: "2-digit",  day: "2-digit",});
 		  return (
 			  <React.Fragment>
 				  <Card >
@@ -54,12 +55,13 @@ class App extends Component {
 						  <CardTitle>{val.username}</CardTitle>
 							  {val.charname}
 							  <br/>
-							  Last Online - {x.toDateString()}
+							  Last Online - {lastOnlineDate}
 					  </CardBody>
 				  </Card>
 			  </React.Fragment>
 		  )
 	  })
+	  var gameDate = new Date(this.state.servData.year+"-"+this.state.servData.month+"-"+this.state.servData.dayofmonth);
 
 	  return (
 		  <div className='App animated fadeIn'>
@@ -77,7 +79,7 @@ class App extends Component {
                         In-Game Date
                     </CardHeader>
 					  <CardBody className='clock-bg'>
-						  <CardText className='font-clock clock-bg h1'>{this.state.servData.month}/{this.state.servData.dayofmonth}</CardText>
+						  <CardText className='font-clock clock-bg h1'>{gameDate.toLocaleDateString("default", {year: "2-digit", month: "2-digit", day: "2-digit"})}</CardText>
 					  </CardBody>
 			  </Card>
 			  <Card className='m-2'>
