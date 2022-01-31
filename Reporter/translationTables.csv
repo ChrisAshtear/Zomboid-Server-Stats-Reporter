@@ -11,3 +11,8 @@ dayofmonth,dayofmonth,Game
 month,month,Game
 daysSinceStart,daysSinceStart,Game
 sname,name,Game
+maxPlayers,maxPlayers,Game
+startDay,startDay,Game
+startMonth,startMonth,Game
+startYear,startYear,Game
+year,year,Game
