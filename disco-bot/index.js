@@ -15,7 +15,7 @@ client.on('message', msg => {
   if (msg.content === '!date') {
 	
   axios.get(prefix + process.env.API_HOST+":"+process.env.API_PORT+"/getserver")
-  .then((response) => { msg.reply("Game Date is: "+(response.data[0].month)+"/"+(response.data[0].dayofmonth)+". The Apocalypse began "+response.data[0].daysSinceStart+" days ago.");})
+  .then((response) => { msg.reply("Game Date is: "+(response.data[0].month)+"/"+(response.data[0].dayofmonth)+"/"+(response.data[0].year)+". The Apocalypse began "+response.data[0].daysSinceStart+" days ago.");})
 
   }
 });
