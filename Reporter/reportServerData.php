@@ -1,6 +1,7 @@
 <?php
 
 include "parseData.php";
+include "getzdata.php";
 require('luaparser.php');
 
 $env = parse_ini_file("/etc/environment",false,INI_SCANNER_RAW);
@@ -43,24 +44,7 @@ while ($row = $result->fetchArray())
 $d->closeSQL();
 echo("trying file read");
 //read time file
-$filename = "sv/Saves/Multiplayer/".$GLOBALS['SERVER_NAME']."/map_t.bin";
-$handle = fopen($filename,"rb");
-$contents = fread($handle, filesize($filename));
-fclose($handle);
-
-$unpacked = unpack("C40", $contents);
-// reset array keys
-$unpacked = array_values($unpacked);
-// this variable holds the size of *one* structure in the file
-$block_size = 3;
-// figure out the number of blocks in the file
-$block_count = $file_size/$block_size;
-
-$day = intval($unpacked[31]) + 1;//day and month are 0-values. $month=0 is january
-$month = intval($unpacked[35]) + 1;
-echo("DayOfMonth:".$day);
-echo("Month:".$month);
-echo("DaysSurvived:".$unpacked[15]);
+$timedata = readzomboidtime();
 
 //INI File
 $server = parse_ini_file("sv/Server/".$GLOBALS['SERVER_NAME'].".ini",false,INI_SCANNER_RAW);
@@ -88,16 +72,16 @@ $startMonth = $sandbox->data['SandboxVars']['StartMonth'];
 $startDay = $sandbox->data['SandboxVars']['StartDay'];
 $daysIntoYear = date('z',strtotime($startMonth.'/'.$startDay)) + 1;
 echo("days into year:".$daysIntoYear);
-$daysSinceStart = $unpacked[15];
+$daysSinceStart = $timedata['dayssurvived'];
 $curYear = floor(($daysSinceStart + $daysIntoYear) / 365) + $startYear;
 
 
 echo($server["PublicName"]);
 
     $sfield['sid'] = 1;
-    $sfield['dayofmonth'] = $day;
-    $sfield['month'] = $month;
-    $sfield['daysSinceStart'] = $unpacked[15];
+    $sfield['dayofmonth'] = $timedata['day'];
+    $sfield['month'] = $timedata['month'];
+    $sfield['daysSinceStart'] = $timedata['dayssurvived'];
     $sfield['sname'] = $server["PublicName"];
     $sfield['desc'] = $server["PublicDescription"];
 	$sfield['maxPlayers'] = $server["MaxPlayers"];
