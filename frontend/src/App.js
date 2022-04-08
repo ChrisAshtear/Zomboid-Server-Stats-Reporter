@@ -11,7 +11,7 @@ class App extends Component {
 	  super(props);
       this.state = {
         fetchData: [{username:'test1',charname:'test2',lastOnline:""},{username:'test1',charname:'test2',lastOnline:""},{username:'test1',charname:'test2',lastOnline:""},{username:'test1',charname:'test2',lastOnline:""},{username:'test1',charname:'test2',lastOnline:"11/23/81"},{username:'test1',charname:'test2',lastOnline:""}],
-		servData: {dayofmonth:2,month:3,daysSinceStart:20,year:1993,name:"ServerName",description:"description",curPlayers:"NA",maxPlayers:0},
+		servData: {dayofmonth:2,month:3,daysSinceStart:20,year:1993,name:"ServerName",description:"description",curPlayers:"NA",maxPlayers:0,curPlayers:0},
 		servName: '',
       }
 	  window.app = this;
