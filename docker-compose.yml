@@ -13,7 +13,7 @@ services:
   nginx:
     depends_on:
       - reporter-api
-      - reporter-frontend
+      - frontend
     restart: always
     build:
       dockerfile: Dockerfile
