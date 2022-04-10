@@ -11,7 +11,7 @@ node {
         /* This builds the actual image; synonymous to
          * docker build on the command line */
         /*app = docker.build("my-image:${env.BUILD_ID}", "-f Reporter/Dockerfile")*/
-		app = docker.build("chrisashtear/zomboidT")
+		app = docker.build("chrisashtear/zomboidt")
     }
 
     stage('Test image') {
