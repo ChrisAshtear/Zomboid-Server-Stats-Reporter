@@ -10,9 +10,9 @@ node {
     stage('Build image') {
         /* This builds the actual image; synonymous to
          * docker build on the command line */
-        /*app = docker.build("my-image:${env.BUILD_ID}", "-f Reporter/Dockerfile")*/
-		app = docker.build("chrisashtear/zomboid-reporter", "-f Reporter/Dockerfile")
-		app2 = docker.build("chrisashtear/zomboid-reporter-frontend", "-f frontend/Dockerfile")
+        /*app = docker.build("my-image:${env.BUILD_ID}", "-f ./Reporter/Dockerfile")*/
+		app = docker.build("chrisashtear/zomboid-reporter", "-f ./Reporter/Dockerfile")
+		app2 = docker.build("chrisashtear/zomboid-reporter-frontend", "-f ./frontend/Dockerfile")
     }
 
     stage('Push image') {
