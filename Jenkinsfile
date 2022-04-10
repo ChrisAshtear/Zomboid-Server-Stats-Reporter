@@ -11,7 +11,8 @@ node {
         /* This builds the actual image; synonymous to
          * docker build on the command line */
         /*app = docker.build("my-image:${env.BUILD_ID}", "-f Reporter/Dockerfile")*/
-		app = docker.build("chrisashtear/zomboidt")
+		app = docker.build("chrisashtear/zomboid-reporter" "-f Reporter/Dockerfile")
+		app2 = docker.build("chrisashtear/zomboid-reporter-frontend" "-f frontend/Dockerfile")
     }
 
     stage('Push image') {
@@ -22,6 +23,8 @@ node {
         docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
+			app2.push("${env.BUILD_NUMBER}")
+            app2.push("latest")
         }
     }
 }
