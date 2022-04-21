@@ -28,7 +28,7 @@ services:
     restart: always
     environment:
       <<: *common-variables
-      ZOMBOID_SERVER_NAME: "PZ"
+      ZOMBOID_SERVER_NAME: "pz"
     volumes:
       - './z/server-data:/var/www/html/sv'
   reporter-api:
@@ -77,4 +77,4 @@ services:
       - "27015:27015"
     volumes:
       - './z/server-data:/server-data'
-      - './z/server-files:/server-files'
+   #   - './z/server-files:/server-files'
