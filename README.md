@@ -21,4 +21,5 @@ This is a small bot that will report the current date in the server. Currently, 
 # Setup Notes
 
 run chmod 777 -R ./z on the server folder created by docker-compose so that it can be written to by services.
+
 Reporter wont complete successfully until someone has been in game and map_t.bin has been created.
