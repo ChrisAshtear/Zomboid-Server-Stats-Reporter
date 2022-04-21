@@ -5,6 +5,9 @@ x-common-variables: &common-variables
   SQL_DATABASE: "Zombo"
   SQL_USER: "SQL_USER"
   SQL_PASSWORD: "SQL_PASS"
+  MYSQL_USER: "SQL_USER"
+  MYSQL_PASSWORD: "SQL_PASS"
+  MYSQL_DATABASE: "Zombo"
 
 services:
   frontend:
@@ -40,12 +43,14 @@ services:
     restart: always
     environment:
       CLIENT_TOKEN: "TOKEN"
-      API_HOST: "reporter-backend"
+      API_HOST: "reporter-api"
       API_PORT: 3001
   sql:
     image: mysql:latest
-    command: --default-authentication-plugin=mysql_native_password
+    command: --init-file /data/application/init.sql
     restart: always
+    volumes:
+        - ./init.sql:/data/application/init.sql
     environment:
       MYSQL_ROOT_PASSWORD: "SQL_ROOT_PASS"
       <<: *common-variables

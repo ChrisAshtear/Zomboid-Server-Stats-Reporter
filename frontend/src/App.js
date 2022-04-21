@@ -84,10 +84,12 @@ class App extends Component {
 			  </Card>
 			  <Card className='m-2'>
 					<CardHeader className='h3'>
-                        Current Players
+                        Max Players
                     </CardHeader>
 					  <CardBody>
-						  <CardText className='h1'>{this.state.servData.curPlayers}/{this.state.servData.maxPlayers}</CardText>
+						  <CardText className='h1'>{this.state.servData.maxPlayers}</CardText>
+						  //<CardText className='h1'>{this.state.servData.curPlayers}/{this.state.servData.maxPlayers}</CardText>
+						  //No current function to retrieve current player amount so just display max players
 					  </CardBody>
 			  </Card>
 			  <Card className='m-2'>
