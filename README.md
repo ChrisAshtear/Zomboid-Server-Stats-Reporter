@@ -1,4 +1,4 @@
-[![Discord](https://img.shields.io/discord/449263083769036810.svg?label=discord&logo=discord&color=informational)](https://discord.gg/hYE2GAM)
+[![Discord](https://img.shields.io/discord/417478014285381636.svg?label=discord&logo=discord&color=informational)](https://discord.gg/hYE2GAM)
 # Zomboid-Server with -Stats-Reporter
 a package that grabs information from a running project zomboid server &amp; posts to a database to be displayed on a webpage or with a discord bot.
 
