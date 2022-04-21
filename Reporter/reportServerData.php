@@ -40,8 +40,8 @@ while ($row = $result->fetchArray())
     $d = new parseData($row);
     $d->parse($row);
     $d->runQuery("Players",$d->sqlGetID("id","Players","id",$row['id']));
-    $d->closeSQL();
 }
+$d->closeSQL();
 echo("trying file read");
 //read time file
 $timedata = readzomboidtime();
