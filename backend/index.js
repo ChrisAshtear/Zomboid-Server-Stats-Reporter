@@ -9,6 +9,7 @@ const fs = require('fs');
 
 const db = mysql.createPool({
   host: process.env.SQL_HOST, 
+  port: process.env.SQL_PORT || 3306, 
   user: process.env.SQL_USER, 
   password: process.env.SQL_PASS,
   database: 'Zombo' 

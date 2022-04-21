@@ -39,9 +39,9 @@ while ($row = $result->fetchArray())
 	if($r['lastConnection'] == ""){$row['lastOnline']= date(DATE_ATOM, mktime(0, 0, 0, 7, 1, 2000));}
     $d = new parseData($row);
     $d->parse($row);
-    $d->runQuery("Players",$d->sqlGetID("id","Players","id",$row['id'])); 
+    $d->runQuery("Players",$d->sqlGetID("id","Players","id",$row['id']));
+    $d->closeSQL();
 }
-$d->closeSQL();
 echo("trying file read");
 //read time file
 $timedata = readzomboidtime();
