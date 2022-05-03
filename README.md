@@ -18,7 +18,8 @@ This is a simple stand-in front end to display data that was collected.
 # Discord
 ![](/assets/discord.png)
 
-This is a small bot that will report the current date in the server. Currently, you have to create your own bot to use this code. 
+This is a small bot that will report the current date in the server. Currently, you have to create your own bot to use this code. See 
+[Setting up a bot.](https://www.digitaltrends.com/gaming/how-to-make-a-discord-bot/) You only need to follow the parts on the discord site to create a bot and get the token, then paste the token into the docker compose file.
 
 # Setup Notes
 
