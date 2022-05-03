@@ -1,73 +1,43 @@
 <?php
 
-include "parseData.php";
+include_once "parseData.php";
 include "getzdata.php";
-require('luaparser.php');
 
 $env = parse_ini_file("/etc/environment",false,INI_SCANNER_RAW);
 //get name of server
 $SERVER_NAME = $env['ZOMBOID_SERVER_NAME'];
 chdir('/var/www/html');
 
-class MyDB extends SQLite3
-{
-    function __construct()
-    {
-        $this->open('sv/Saves/Multiplayer/'.$GLOBALS['SERVER_NAME'].'/players.db');
-    }
+//players db
+//game db
+try{
+    readZPlayerDataToDB();
+}
+catch(Exception $e){
+    echo($e);
+    echo("Could not read zomboid db files. Is the zomboid server running & has a player been on it to force the server to create the save file?");
+    return;
 }
 
-class MyPZ_DB extends SQLite3
-{
-    function __construct()
-    {
-        $this->open('sv/db/'.$GLOBALS['SERVER_NAME'].'.db');
-    }
+//map_t.bin
+try{
+    $timedata = readZTime();
+}
+catch(Exception $e){
+    echo($e);
+    echo("Could not read zomboid time file. Is the zomboid server running & has a player been on it to force the server to create the save file?");
+    return;
 }
 
-
-$db = new MyDB();
-$pz_db = new MyPZ_DB();
-
-$result = $db->query('SELECT * FROM networkPlayers');
-
-while ($row = $result->fetchArray()) 
-{
-    $pzLookup = $pz_db->query('SELECT username,lastConnection FROM whitelist WHERE username = "'.$row['username'].'"');
-    $r = $pzLookup->fetchArray();
-    $row['lastOnline'] = $r['lastConnection'];
-	if($r['lastConnection'] == ""){$row['lastOnline']= date(DATE_ATOM, mktime(0, 0, 0, 7, 1, 2000));}
-    $d = new parseData($row);
-    $d->parse($row);
-    $d->runQuery("Players",$d->sqlGetID("id","Players","id",$row['id']));
-    $d->closeSQL();
-}
-
-echo("trying file read");
-//read time file
-$timedata = readzomboidtime();
-
-//INI File
-$server = parse_ini_file("sv/Server/".$GLOBALS['SERVER_NAME'].".ini",false,INI_SCANNER_RAW);
-//Sandbox LUA file
-$sandbox = new LUAParser();
-
-try {
-
-	// Add LUA keys that have to be present in the file
-	// If one of the defined keys are missing an syntax error exception will be thrown
-	$sandbox->addSyntaxKey('StartDay');
-	$sandbox->addSyntaxKey('StartYear');
-	$sandbox->addSyntaxKey('StartMonth');
-
-	$sandbox->parseFile("sv/Server/".$GLOBALS['SERVER_NAME']."_SandboxVars.lua");
-}
-catch(Exception $e) {
-    echo 'Exception: ',  $e->getMessage(), PHP_EOL;
-}
+//Server INI
+$serverText = file_get_contents("sv/Server/".$GLOBALS['SERVER_NAME'].".ini");
+$serverText = str_replace('#',';',$serverText);
+//New parse_ini_file doesnt recognize # lines as comments so it wont read it otherwise.
+$server = parse_ini_string($serverText,false,INI_SCANNER_RAW);
+//Sandbox.lua
+$sandbox = readSandbox();
 
 //set current year.
-
 $startYear = $sandbox->data['SandboxVars']['StartYear']-1+1993;//1993 is the year Zomboid takes place.
 $startMonth = $sandbox->data['SandboxVars']['StartMonth'];
 $startDay = $sandbox->data['SandboxVars']['StartDay'];
@@ -76,24 +46,23 @@ echo("days into year:".$daysIntoYear);
 $daysSinceStart = $timedata['dayssurvived'];
 $curYear = floor(($daysSinceStart + $daysIntoYear) / 365) + $startYear;
 
+$sfield['sid'] = 1;
+$sfield['dayofmonth'] = $timedata['day'];
+$sfield['month'] = $timedata['month'];
+$sfield['daysSinceStart'] = $timedata['dayssurvived'];
+$sfield['sname'] = $server["PublicName"];
+$sfield['desc'] = $server["PublicDescription"];
+$sfield['maxPlayers'] = $server["MaxPlayers"];
+$sfield['startDay'] = $startDay;
+$sfield['startMonth'] = $startMonth;
+$sfield['startYear'] = $startYear;
+$sfield['year'] = $curYear;
 
-echo($server["PublicName"]);
-
-    $sfield['sid'] = 1;
-    $sfield['dayofmonth'] = $timedata['day'];
-    $sfield['month'] = $timedata['month'];
-    $sfield['daysSinceStart'] = $timedata['dayssurvived'];
-    $sfield['sname'] = $server["PublicName"];
-    $sfield['desc'] = $server["PublicDescription"];
-	$sfield['maxPlayers'] = $server["MaxPlayers"];
-	$sfield['startDay'] = $startDay;
-	$sfield['startMonth'] = $startMonth;
-	$sfield['startYear'] = $startYear;
-	$sfield['year'] = $curYear;
-	
-    $d = new parseData($sfield);
-    $d->parse($sfield);
-    $d->runQuery("Game",$d->sqlGetID("id","Game","id",$sfield['sid']));
+$d = new parseData($sfield);
+$d->parse($sfield);
+$d->runQuery("Game",$d->sqlGetID("id","Game","id",$sfield['sid']));
 
 $d->closeSQL();
+
+
 ?>

@@ -40,6 +40,8 @@ services:
       <<: *common-variables
   discord:
     image: chrisashtear/zomboid-discobot:latest
+    depends_on:
+      - reporter-api
     restart: always
     environment:
       CLIENT_TOKEN: "TOKEN"
@@ -77,4 +79,3 @@ services:
       - "27015:27015"
     volumes:
       - './z/server-data:/server-data'
-   #   - './z/server-files:/server-files'

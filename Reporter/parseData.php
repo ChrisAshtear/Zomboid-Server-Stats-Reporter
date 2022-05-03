@@ -29,9 +29,9 @@ class parseData
 	{
 		$SQLSERVER = $_ENV['SQL_HOST'];
 		$SQLUSER = $_ENV['SQL_USER'];
-		$SQLPASS = $_ENV['SQL_PASS'];
-		$SQLDATABASE = $_ENV['SQL_DATABASE'];
-		$this->conn = new mysqli($SQLSERVER, $SQLUSER, $SQLPASS, $SQLDATABASE);
+		$SQLPASS = $_ENV['SQL_PASSWORD'];
+		$SQLDB = $_ENV['SQL_DATABASE'];
+		$this->conn = new mysqli($SQLSERVER, $SQLUSER, $SQLPASS, $SQLDB);
 	}
 	
 	public function parse($data)
