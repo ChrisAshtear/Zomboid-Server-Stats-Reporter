@@ -28,17 +28,17 @@ node {
          * First, the incremental build number from Jenkins
          * Second, the 'latest' tag.
          * Pushing multiple tags is cheap, as all the layers are reused. */
-		def dockerHome = tool 'myDocker'
-        env.PATH = "${dockerHome}/bin:${env.PATH}"
-		 
-        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-			app.push("${env.BUILD_NUMBER}")
-            app.push("latest")
-			app2.push("${env.BUILD_NUMBER}")
-            app2.push("latest")
-            app3.push("latest")
-            app4.push("latest")
-            app5.push("latest")
-        }
+		docker.withTool('myDocker'){
+			docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+				app.push("${env.BUILD_NUMBER}")
+				app.push("latest")
+				app2.push("${env.BUILD_NUMBER}")
+				app2.push("latest")
+				app3.push("latest")
+				app4.push("latest")
+				app5.push("latest")
+			}
+		}
+        
     }
 }
